@@ -46,3 +46,20 @@ async def recibir_mensaje(request: Request):
     historiales[usuario_id].append({"role": "assistant", "content": texto})
 
     return {"respuesta": texto}
+
+
+import threading
+import requests
+import time
+
+def self_ping():
+    while True:
+        time.sleep(25)  # cada 25 segundos
+        try:
+            requests.get("https://setter-ai-tv96.onrender.com/")
+            print("✅ Self-ping enviado")
+        except:
+            print("❌ Error en self-ping")
+
+# Iniciar el self-ping en segundo plano
+threading.Thread(target=self_ping, daemon=True).start()

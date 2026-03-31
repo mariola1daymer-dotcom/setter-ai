@@ -2,6 +2,9 @@ from fastapi import FastAPI, Request
 from groq import Groq
 from dotenv import load_dotenv
 import os
+import threading
+import requests
+import time
 
 load_dotenv()
 
@@ -46,3 +49,15 @@ async def recibir_mensaje(request: Request):
     historiales[usuario_id].append({"role": "assistant", "content": texto})
 
     return {"respuesta": texto}
+
+def self_ping():
+    time.sleep(60)
+    while True:
+        time.sleep(25)
+        try:
+            requests.get("https://setter-ai-tv96.onrender.com/")
+            print("✅ Self-ping enviado")
+        except:
+            print("❌ Error en self-ping")
+
+threading.Thread(target=self_ping, daemon=True).start()
